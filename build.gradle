@@ -8,23 +8,38 @@ group = 'com.qqspeed'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+
+
 repositories {
     mavenCentral()
 }
 
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     implementation group: 'com.alibaba',
                    name: 'druid',
                    version: '1.2.9'
     implementation group: 'com.baomidou',
                    name: 'mybatis-plus-boot-starter',
                    version: '3.5.1'
+    /*Mybatis 代码生成器*/
+    implementation group: 'com.baomidou',
+                   name: 'mybatis-plus-generator',
+                   version: '3.5.2'
+    implementation group: 'org.apache.velocity',
+                   name: 'velocity-engine-core',
+                   version: '2.3'
+    implementation group: 'org.springframework.boot',
+                   name: 'spring-boot-starter-freemarker',
+                   version: '2.6.7'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('test') {
