@@ -1,4 +1,4 @@
-package com.qqspeed.performancedataplatform.util;
+package com.qqspeed.performancedataplatform.config;
 
 
 import org.springframework.context.annotation.Configuration;
