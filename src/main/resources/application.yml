@@ -1,0 +1,27 @@
+# application.yaml(根据项目实际情况修改配置)
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/performancedata?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+# Server settings (ServerProperties)
+server:
+  port: 9000
+  address: 127.0.0.1
+  sessionTimeout: 30
+
+# Tomcat specifics
+tomcat:
+    accessLogEnabled: false
+    protocolHeader: x-forwarded-proto
+    remoteIpHeader: x-forwarded-for
+    basedir:
+    backgroundProcessorDelay: 30 # secs
+
+# MyBatis settings
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.qqspeed.performancedataplatform.dao
