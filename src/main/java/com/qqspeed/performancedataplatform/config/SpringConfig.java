@@ -17,6 +17,6 @@ import org.springframework.context.annotation.Import;
 //@PropertySource({"classpath:jdbc.properties"})
 
 // 导入Jdbc、MybatisPlus配置类
-@Import({JdbcConfig.class,MybatisPlusConfig.class})
+@Import({JdbcConfig.class})
 public class SpringConfig {
 }

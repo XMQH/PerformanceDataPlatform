@@ -41,3 +41,10 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
+#  global-config:
+#    field-strategy字段更新插入策略属性说明：
+#    IGNORED(0): "忽略判断", 所有字段都更新和插入
+#    NOT_NULL(1): "非 NULL 判断", 只更新和插入非NULL值
+#    NOT_EMPTY(2): "非空判断", 只更新和插入非NULL值且非空字符串
+#    DEFAULT：默认NOT_NULL
+#    field-strategy: 2
