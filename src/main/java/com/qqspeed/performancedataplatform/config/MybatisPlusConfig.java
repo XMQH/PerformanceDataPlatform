@@ -1,34 +1,33 @@
 package com.qqspeed.performancedataplatform.config;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@EnableTransactionManagement //自动管理事务
 @Configuration
-@MapperScan("com.qqspeed.performancedataplatform.mapper")
+@MapperScan("com.qqspeed.performancedataplatform.mapper") //扫描mapper文件夹
 public class MybatisPlusConfig {
-    /**
-     * 分页插件
-     * @return
-     */
-    @Bean
-    public PaginationInnerInterceptor paginationInterceptor() {
-        PaginationInnerInterceptor paginationInterceptor = new PaginationInnerInterceptor();
-        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
-        // paginationInterceptor.setOverflow(false);
-        // 设置最大单页限制数量，默认 500 条，-1 不受限制
-        // paginationInterceptor.setLimit(500);
-        return paginationInterceptor;
-    }
+    // 注册乐观锁插件与分页插件
 
     /**
-     * 乐观锁插件
-     * @return
+     * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
      */
     @Bean
-    public OptimisticLockerInnerInterceptor optimisticLockerInterceptor() {
-        return new OptimisticLockerInnerInterceptor();
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        //分页插件
+        mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        //乐观锁插件
+        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+
+        return mybatisPlusInterceptor;
     }
+
+
 }

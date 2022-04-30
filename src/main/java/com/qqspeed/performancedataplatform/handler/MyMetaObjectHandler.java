@@ -1,5 +1,9 @@
 package com.qqspeed.performancedataplatform.handler;
 
+/**
+ * MyBatisPlus 处理类
+ * **/
+
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -14,13 +18,13 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill..");
-        this.strictInsertFill(metaObject, "gmtCreate", () -> LocalDateTime.now(), LocalDateTime.class);
-        this.strictUpdateFill(metaObject, "gmtModified", () -> LocalDateTime.now(), LocalDateTime.class);
+        this.strictInsertFill(metaObject, "gtmCreate", LocalDateTime::now, LocalDateTime.class);
+        this.strictUpdateFill(metaObject, "gtmModified", LocalDateTime::now, LocalDateTime.class);
     }
     //更新时的填充策略
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("start insert fill..");
-        this.strictUpdateFill(metaObject, "gmtModified", () -> LocalDateTime.now(), LocalDateTime.class);
+        this.strictUpdateFill(metaObject, "gtmModified", LocalDateTime::now, LocalDateTime.class);
     }
 }
