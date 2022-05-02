@@ -1,7 +1,7 @@
 package com.qqspeed.performancedataplatform.mapper;
 
-import com.qqspeed.performancedataplatform.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qqspeed.performancedataplatform.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,6 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-
+    //数据层方法...CRUD 继承了BaseMapper，可不用在自定义方法。可以添加自定义方法
 
 }

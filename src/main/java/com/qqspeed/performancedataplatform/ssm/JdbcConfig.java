@@ -1,4 +1,4 @@
-package com.qqspeed.performancedataplatform.config;
+package com.qqspeed.performancedataplatform.ssm;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,11 @@ public class JdbcConfig {
         return ds;
     }
 
-
+    /**
+     * 事务处理
+     * @param dataSource
+     * @return
+     */
     @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource){
         DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();

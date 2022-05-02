@@ -1,12 +1,13 @@
 package com.qqspeed.performancedataplatform.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import lombok.*;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -26,7 +27,6 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -84,10 +84,10 @@ public class User implements Serializable {
     private String email;
 
     /**
-     * 用户备注
+     * 用户描述
      */
-    @TableField("note")
-    private String note;
+    @TableField("description")
+    private String description;
 
     /**
      * 创建时间
@@ -117,7 +117,6 @@ public class User implements Serializable {
      * 逻辑删除字段
      */
     @TableField("deleted")
-    @TableLogic //逻辑删除
     private Integer deleted;
 
 

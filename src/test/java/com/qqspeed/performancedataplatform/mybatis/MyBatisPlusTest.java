@@ -38,7 +38,7 @@ public class MyBatisPlusTest {
         user.setPermission(1);
         user.setSex(2);
         user.setState(0);
-        user.setNote("我最帅");
+        user.setDescription("我最帅");
         int insert = userMapper.insert(user);
         System.out.println(insert);
 

@@ -2,7 +2,7 @@ package com.qqspeed.performancedataplatform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qqspeed.performancedataplatform.entity.User;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
  * @author djiehuang
  * @since 2022-04-28
  */
-@Service
+@Transactional //开启事务
 public interface UserService extends IService<User> {
+    // 业务层方法
 
 }

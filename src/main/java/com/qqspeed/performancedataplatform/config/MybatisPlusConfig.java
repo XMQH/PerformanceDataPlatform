@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @MapperScan("com.qqspeed.performancedataplatform.mapper") //扫描mapper文件夹
 public class MybatisPlusConfig {
     // 注册乐观锁插件与分页插件
