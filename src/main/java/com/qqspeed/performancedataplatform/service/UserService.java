@@ -15,5 +15,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional //开启事务
 public interface UserService extends IService<User> {
     // 业务层方法
-
 }
