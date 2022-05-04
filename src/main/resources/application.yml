@@ -28,7 +28,6 @@ server:
   tomcat:
     accesslog:
       enabled: false
-sessionT
 # MyBatis-Plus settings
 #控制台打印sql
 mybatis-plus:

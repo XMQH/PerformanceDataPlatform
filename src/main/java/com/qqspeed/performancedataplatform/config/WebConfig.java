@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
          *  maxAge：周期类最大时间
          */
         registry.addMapping("/**")
-                .allowedOrigins("Http://localhost:8080","null")
+                .allowedOrigins("Http://localhost:80","null")
                 .allowedMethods("GET","POST","PUT","OPTIONS","DELETE")
                 .allowCredentials(true)
                 .maxAge(3600);
