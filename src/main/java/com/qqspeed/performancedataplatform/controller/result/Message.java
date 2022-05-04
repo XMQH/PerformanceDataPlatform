@@ -6,7 +6,7 @@ package com.qqspeed.performancedataplatform.controller.result;
 public class Message {
     // 登录
     public static final String LOGIN_SUCCESS_MSG="登录成功！";
-    public static final String LOGIN_FAILED_MSG="登录失败！";
+    public static final String LOGIN_FAILED_MSG="登录失败！请检查用户名和密码！";
     public static final String NAME_ERR_MSG="用户名错误！";
     public static final String PASSWORD_INFO_MSG="密码错误！请再试一次！";
     public static final String PASSWORD_ERR_MSG="输入错误密码次数过多！请稍后再试！";
