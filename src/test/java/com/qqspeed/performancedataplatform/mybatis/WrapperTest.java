@@ -1,5 +1,6 @@
 package com.qqspeed.performancedataplatform.mybatis;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qqspeed.performancedataplatform.entity.User;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
@@ -16,11 +17,18 @@ public class WrapperTest {
 
     @Test
     public void testSelectList() {
-        //测试查询年龄大于40的的用户
+        //测试查询年龄大于20的的用户
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.ge("age",40);
+        wrapper.ge("age",20);
         List<User> users = userMapper.selectList(wrapper);
         users.forEach(System.out::println);
+    }
 
+    @Test
+    public void testSelectOne(){
+        LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(User::getName, "admin")
+               .eq(User::getPassword, "123456");
+        User userInfo = userMapper.selectOne(wrapper);
     }
 }

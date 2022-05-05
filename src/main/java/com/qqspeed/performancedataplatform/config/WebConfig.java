@@ -4,6 +4,7 @@ package com.qqspeed.performancedataplatform.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 //全局配置类--配置跨域请求
 @Configuration
@@ -18,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
          *  maxAge：周期类最大时间
          */
         registry.addMapping("/**")
-                .allowedOrigins("Http://localhost:80","null")
+                .allowedOrigins("*")
                 .allowedMethods("GET","POST","PUT","OPTIONS","DELETE")
                 .allowCredentials(true)
                 .maxAge(3600);

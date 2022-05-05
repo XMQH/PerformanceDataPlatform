@@ -23,11 +23,12 @@ spring:
 
 # Server settings (ServerProperties)
 server:
-  port: 80
-  address: 127.0.0.1
+  port: 8080
   tomcat:
     accesslog:
       enabled: false
+  servlet:
+    context-path: /qqspeed
 # MyBatis-Plus settings
 #控制台打印sql
 mybatis-plus:

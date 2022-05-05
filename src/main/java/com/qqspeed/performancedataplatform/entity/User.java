@@ -92,8 +92,8 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gtm_create",fill = FieldFill.INSERT) //fill = FieldFill.INSERT 插入数据是自动填充
-    private LocalDateTime gtmCreate;
+    @TableField(value = "gmt_create",fill = FieldFill.INSERT) //fill = FieldFill.INSERT 插入数据是自动填充
+    private LocalDateTime gmtCreate;
 
     /**
      * 更新时间
@@ -103,8 +103,8 @@ public class User implements Serializable {
      * 其实这个问题可以说并不是乐观锁导致的自动注入失效，只是从数据库中查询回来的数据，更新是updateTime会使用原有数据。
      * 解决办法就是在注解上添加update = "now()"
      */
-    @TableField(value = "gtm_modified",fill = FieldFill.INSERT_UPDATE,update = "now()") //fill = FieldFill.INSERT_UPDATE 更新时自动填充
-    private LocalDateTime gtmModified;
+    @TableField(value = "gmt_modified",fill = FieldFill.INSERT_UPDATE,update = "now()") //fill = FieldFill.INSERT_UPDATE 更新时自动填充
+    private LocalDateTime gmtModified;
 
     /**
      * 版本(乐观锁)
