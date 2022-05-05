@@ -17,13 +17,16 @@ public class LoginController {
     private UserService userService;
     @PostMapping
     public Result login(@RequestBody User user){
+        System.out.println(user+"////////////////");
         LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<User>();
-        wrapper.eq(User::getName, user.getName())
+        wrapper.eq(User::getUsername, user.getUsername())
                .eq(User::getPassword, user.getPassword());
         User userInfo = userService.getOne(wrapper);
-        System.out.println(userInfo);
-        Integer code= userInfo != null && userInfo==user ? Code.LOGIN_SUCCESS : Code.LOGIN_FAILED;
-        String msg = userInfo != null ? Message.LOGIN_FAILED_MSG : Message.LOGIN_SUCCESS_MSG;
+        Integer code= userInfo != null
+                && userInfo.getUsername()==user.getUsername()
+                && userInfo.getPassword() ==user.getPassword()
+                ? Code.LOGIN_SUCCESS : Code.LOGIN_FAILED;
+        String msg = userInfo != null ? Message.LOGIN_SUCCESS_MSG : Message.LOGIN_FAILED_MSG;
         return new Result(code,userInfo,msg);
     }
 }

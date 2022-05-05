@@ -29,7 +29,7 @@ public class MyBatisPlusTest {
     @Test
     public void testInsert(){
         User user = new User();
-        user.setName("Test4");
+        user.setUsername("Test4");
         user.setAge(43);
         user.setEmail("6535345345@qq.com");
         user.setNickname("李四");
@@ -49,7 +49,7 @@ public class MyBatisPlusTest {
     public void testUpdate(){
         User user = new User();
         user.setId(2L);
-        user.setName("Test2");
+        user.setUsername("Test2");
         user.setAge(3);
         user.setEmail("6565656@qq.com");
         user.setNickname("张三");
@@ -68,7 +68,7 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setName("王五");
+        user.setUsername("王五");
         // 执行更新的操作
         userMapper.updateById(user);
     }
@@ -78,11 +78,11 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setName("王五");
+        user.setUsername("王五");
 
         // 模拟抢先更新，没使用多线程 备注 后面试一下
         User user1 = userMapper.selectById(6L);
-        user1.setName("老六");
+        user1.setUsername("老六");
         userMapper.updateById(user1); //更新成功
         // 执行更新的操作
         userMapper.updateById(user); //更新失败 结果“老六” 此时版本号已被更新 版本不一致 不能修改

@@ -32,8 +32,8 @@ public class User implements Serializable {
     /**
      * 姓名
      */
-    @TableField("name")
-    private String name;
+    @TableField("username")
+    private String username;
 
     /**
      * 昵称
