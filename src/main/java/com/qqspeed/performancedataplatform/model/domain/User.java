@@ -1,13 +1,12 @@
-package com.qqspeed.performancedataplatform.entity;
+package com.qqspeed.performancedataplatform.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -15,9 +14,8 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author djiehuang
- * @since 2022-04-30
+ * @since 2022-05-07
  */
-
 @Data //相当于同时使用了@ToString、@EqualsAndHashCode、@Getter、@Setter和@RequiredArgsConstrutor这些注解
 @AllArgsConstructor //生成对应的有参构造方法
 @NoArgsConstructor //生成对应的无参构造方法
@@ -27,13 +25,50 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 姓名
      */
-    @TableField("username")
-    private String username;
+    @TableField("user_name")
+    private String userName;
+
+    /**
+     * 账号
+     */
+    @TableField("user_account")
+    private String userAccount;
+
+    /**
+     * 密码
+     */
+    @TableField("user_password")
+    private String userPassword;
+
+    /**
+     * 头像
+     */
+    @TableField("avatar_url")
+    private String avatarUrl;
+
+    /**
+     * 性别
+     */
+    @TableField("gender")
+    private Integer gender;
+
+    /**
+     * 电话号码
+     */
+    @TableField("phone")
+    private String phone;
+
+    /**
+     * 邮箱
+     */
+    @TableField("email")
+    private String email;
 
     /**
      * 昵称
@@ -42,58 +77,28 @@ public class User implements Serializable {
     private String nickname;
 
     /**
-     * 密码
-     */
-    @TableField("password")
-    private String password;
-
-    /**
-     * 年龄
-     */
-    @TableField("age")
-    private Integer age;
-
-    /**
-     * 性别
-     */
-    @TableField("sex")
-    private Integer sex;
-
-    /**
-     * 用户权限
+     * 用户权限 0-普通用户 1-管理员
      */
     @TableField("permission")
     private Integer permission;
 
     /**
-     * 用户状态
+     * 用户状态 0-正常
      */
-    @TableField("state")
-    private Integer state;
+    @TableField("status")
+    private Integer status;
 
     /**
-     * 用户电话
+     * 创建时间
      */
-    @TableField("phone")
-    private String phone;
-
-    /**
-     * 用户邮箱
-     */
-    @TableField("email")
-    private String email;
+    @TableField(value = "create_time",fill = FieldFill.INSERT) //fill = FieldFill.INSERT 插入数据是自动填充
+    private LocalDateTime createTime;
 
     /**
      * 用户描述
      */
     @TableField("description")
     private String description;
-
-    /**
-     * 创建时间
-     */
-    @TableField(value = "gmt_create",fill = FieldFill.INSERT) //fill = FieldFill.INSERT 插入数据是自动填充
-    private LocalDateTime gmtCreate;
 
     /**
      * 更新时间
@@ -103,11 +108,11 @@ public class User implements Serializable {
      * 其实这个问题可以说并不是乐观锁导致的自动注入失效，只是从数据库中查询回来的数据，更新是updateTime会使用原有数据。
      * 解决办法就是在注解上添加update = "now()"
      */
-    @TableField(value = "gmt_modified",fill = FieldFill.INSERT_UPDATE,update = "now()") //fill = FieldFill.INSERT_UPDATE 更新时自动填充
-    private LocalDateTime gmtModified;
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE,update = "now()") //fill = FieldFill.INSERT_UPDATE 更新时自动填充
+    private LocalDateTime updateTime;
 
     /**
-     * 版本(乐观锁)
+     * 乐观锁
      */
     @TableField("version")
     @Version //乐观锁注解
@@ -117,6 +122,7 @@ public class User implements Serializable {
      * 逻辑删除字段
      */
     @TableField("deleted")
+    @TableLogic
     private Integer deleted;
 
 

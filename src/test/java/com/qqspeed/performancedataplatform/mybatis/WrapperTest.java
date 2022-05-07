@@ -2,8 +2,8 @@ package com.qqspeed.performancedataplatform.mybatis;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qqspeed.performancedataplatform.entity.User;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
+import com.qqspeed.performancedataplatform.model.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,8 +27,8 @@ public class WrapperTest {
     @Test
     public void testSelectOne(){
         LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, "admin")
-               .eq(User::getPassword, "123456");
+        wrapper.eq(User::getUserName, "admin")
+               .eq(User::getUserPassword, "123456");
         User userInfo = userMapper.selectOne(wrapper);
     }
 }

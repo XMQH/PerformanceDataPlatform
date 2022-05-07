@@ -38,7 +38,7 @@ public class CodeGenerator {
                 .packageConfig(builder -> {
                     builder.parent(parentPackageName) // 设置父包名
                             .moduleName(moduleName) // 设置父包模块名
-                            .entity("entity")
+                            .entity("domain")
                             .service("service")
                             .serviceImpl("serviceImpl")
                             .controller("controller")

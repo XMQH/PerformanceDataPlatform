@@ -1,8 +1,9 @@
 package com.qqspeed.performancedataplatform.mybatis;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.qqspeed.performancedataplatform.entity.User;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
+import com.qqspeed.performancedataplatform.model.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,16 +30,21 @@ public class MyBatisPlusTest {
     @Test
     public void testInsert(){
         User user = new User();
-        user.setUsername("Test4");
-        user.setAge(43);
-        user.setEmail("6535345345@qq.com");
-        user.setNickname("李四");
-        user.setPassword("123456");
-        user.setPhone("13455523365");
-        user.setPermission(1);
-        user.setSex(2);
-        user.setState(0);
-        user.setDescription("我最帅");
+        user.setUserName("TestCc");
+        user.setUserAccount("243552");
+        user.setUserPassword("123456");
+        user.setAvatarUrl("https://weibo.com/u/6182024549");
+        user.setGender(0);
+        user.setPhone("25665463432");
+        user.setEmail("23878234@qq.com");
+        user.setNickname("小管理");
+        user.setPermission(0);
+        user.setStatus(0);
+        user.setCreateTime(LocalDateTime.now());
+        user.setDescription("你好");
+        user.setUpdateTime(LocalDateTime.now());
+
+
         int insert = userMapper.insert(user);
         System.out.println(insert);
 
@@ -49,15 +55,14 @@ public class MyBatisPlusTest {
     public void testUpdate(){
         User user = new User();
         user.setId(2L);
-        user.setUsername("Test2");
-        user.setAge(3);
+        user.setUserName("Test2");
+        user.setGender(2);
         user.setEmail("6565656@qq.com");
         user.setNickname("张三");
-        user.setPassword("123456");
+        user.setUserPassword("123456");
         user.setPhone("12345678910");
         user.setPermission(1);
-        user.setSex(2);
-        user.setState(0);
+        user.setStatus(0);
         // 该方法会有更新字段验证策略，需配置：field-strategy字段更新插入策略属性
         userMapper.updateById(user);
     }
@@ -68,7 +73,7 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setUsername("王五");
+        user.setUserName("王五");
         // 执行更新的操作
         userMapper.updateById(user);
     }
@@ -78,11 +83,11 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setUsername("王五");
+        user.setUserName("王五");
 
         // 模拟抢先更新，没使用多线程 备注 后面试一下
         User user1 = userMapper.selectById(6L);
-        user1.setUsername("老六");
+        user1.setUserName("老六");
         userMapper.updateById(user1); //更新成功
         // 执行更新的操作
         userMapper.updateById(user); //更新失败 结果“老六” 此时版本号已被更新 版本不一致 不能修改
