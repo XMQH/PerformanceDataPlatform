@@ -1,4 +1,4 @@
-package com.qqspeed.performancedataplatform.contant;
+package com.qqspeed.performancedataplatform.constant;
 
 /**
  * 用户常量

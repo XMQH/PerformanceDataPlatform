@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.qqspeed.performancedataplatform.contant.UserConstant.USER_LOGIN_STATE;
+import static com.qqspeed.performancedataplatform.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * <p>

@@ -1,9 +1,9 @@
 package com.qqspeed.performancedataplatform.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qqspeed.performancedataplatform.contant.result.Code;
-import com.qqspeed.performancedataplatform.contant.result.Message;
-import com.qqspeed.performancedataplatform.contant.result.Result;
+import com.qqspeed.performancedataplatform.constant.result.Code;
+import com.qqspeed.performancedataplatform.constant.result.Message;
+import com.qqspeed.performancedataplatform.constant.result.Result;
 import com.qqspeed.performancedataplatform.model.domain.User;
 import com.qqspeed.performancedataplatform.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.qqspeed.performancedataplatform.contant.UserConstant.ADMIN_ROLE;
-import static com.qqspeed.performancedataplatform.contant.UserConstant.USER_LOGIN_STATE;
+import static com.qqspeed.performancedataplatform.constant.UserConstant.ADMIN_ROLE;
+import static com.qqspeed.performancedataplatform.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * <p>
