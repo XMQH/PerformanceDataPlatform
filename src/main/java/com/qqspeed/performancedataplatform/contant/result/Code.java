@@ -1,4 +1,4 @@
-package com.qqspeed.performancedataplatform.controller.result;
+package com.qqspeed.performancedataplatform.contant.result;
 
 /**
  * 状态码

@@ -20,6 +20,9 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 配置一个连接在池中最小生存时间
       min-evictable-idle-time-millis: 3000
+  # session失效时间
+  session:
+    timeout: 86400
 
 # Server settings (ServerProperties)
 server:

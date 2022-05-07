@@ -1,8 +1,6 @@
 package com.qqspeed.performancedataplatform.service.impl;
-import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
 import com.qqspeed.performancedataplatform.model.domain.User;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -118,27 +115,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
         // 用户脱敏
-        User safeUser = new User();
-        safeUser.setId(loginUser.getId());
-        safeUser.setUserName(loginUser.getUserName());
-        safeUser.setUserAccount(loginUser.getUserAccount());
-        safeUser.setAvatarUrl(loginUser.getAvatarUrl());
-        safeUser.setGender(loginUser.getGender());
-        safeUser.setPhone(loginUser.getPhone());
-        safeUser.setEmail(loginUser.getEmail());
-        safeUser.setNickname(loginUser.getNickname());
-        safeUser.setPermission(loginUser.getPermission());
-        safeUser.setStatus(loginUser.getStatus());
-        safeUser.setCreateTime(loginUser.getCreateTime());
-        safeUser.setDescription(loginUser.getDescription());
+        User safetyUser = getSafetyUser(loginUser);
 
         // 记录用户登录状态
-        request.getSession().setAttribute(USER_LOGIN_STATE,safeUser);
+        request.getSession().setAttribute(USER_LOGIN_STATE,safetyUser);
 
         // 返回脱敏后的用户信息
-        return safeUser;
+        return safetyUser;
     }
 
-
-
+    /**
+     * 用户脱敏
+     * @param loginUser
+     * @return
+     */
+    public User getSafetyUser(User loginUser){
+        User safetyUser = new User();
+        safetyUser.setId(loginUser.getId());
+        safetyUser.setUserName(loginUser.getUserName());
+        safetyUser.setUserAccount(loginUser.getUserAccount());
+        safetyUser.setAvatarUrl(loginUser.getAvatarUrl());
+        safetyUser.setGender(loginUser.getGender());
+        safetyUser.setPhone(loginUser.getPhone());
+        safetyUser.setEmail(loginUser.getEmail());
+        safetyUser.setNickname(loginUser.getNickname());
+        safetyUser.setPermission(loginUser.getPermission());
+        safetyUser.setStatus(loginUser.getStatus());
+        safetyUser.setCreateTime(loginUser.getCreateTime());
+        safetyUser.setDescription(loginUser.getDescription());
+        return safetyUser;
+    }
 }

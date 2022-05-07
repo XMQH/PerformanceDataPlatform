@@ -1,15 +1,10 @@
 package com.qqspeed.performancedataplatform.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.qqspeed.performancedataplatform.controller.result.Code;
-import com.qqspeed.performancedataplatform.controller.result.Message;
-import com.qqspeed.performancedataplatform.controller.result.Result;
 import com.qqspeed.performancedataplatform.model.domain.User;
 import com.qqspeed.performancedataplatform.model.request.UserLoginRequest;
 import com.qqspeed.performancedataplatform.model.request.UserRegisterRequest;
 import com.qqspeed.performancedataplatform.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
