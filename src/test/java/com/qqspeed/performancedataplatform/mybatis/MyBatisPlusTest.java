@@ -1,5 +1,4 @@
 package com.qqspeed.performancedataplatform.mybatis;
-import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
@@ -38,12 +37,9 @@ public class MyBatisPlusTest {
         user.setPhone("25665463432");
         user.setEmail("23878234@qq.com");
         user.setNickname("小管理");
-        user.setPermission(0);
+        user.setPermission(1);
         user.setStatus(0);
-        user.setCreateTime(LocalDateTime.now());
         user.setDescription("你好");
-        user.setUpdateTime(LocalDateTime.now());
-
 
         int insert = userMapper.insert(user);
         System.out.println(insert);
@@ -54,15 +50,11 @@ public class MyBatisPlusTest {
     @Test
     public void testUpdate(){
         User user = new User();
-        user.setId(2L);
-        user.setUserName("Test2");
-        user.setGender(2);
-        user.setEmail("6565656@qq.com");
-        user.setNickname("张三");
+        user.setUserName("TestCc");
+        user.setUserAccount("243552");
         user.setUserPassword("123456");
-        user.setPhone("12345678910");
-        user.setPermission(1);
-        user.setStatus(0);
+        user.setAvatarUrl("https://weibo.com/u/6182024549");
+        user.setGender(1);
         // 该方法会有更新字段验证策略，需配置：field-strategy字段更新插入策略属性
         userMapper.updateById(user);
     }

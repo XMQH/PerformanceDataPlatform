@@ -1,9 +1,10 @@
 package com.qqspeed.performancedataplatform.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qqspeed.performancedataplatform.constant.result.Code;
-import com.qqspeed.performancedataplatform.constant.result.Message;
-import com.qqspeed.performancedataplatform.constant.result.Result;
+import com.qqspeed.performancedataplatform.common.result.Code;
+import com.qqspeed.performancedataplatform.common.result.Message;
+import com.qqspeed.performancedataplatform.common.result.Result;
+import com.qqspeed.performancedataplatform.exception.BusinessException;
 import com.qqspeed.performancedataplatform.model.domain.User;
 import com.qqspeed.performancedataplatform.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.qqspeed.performancedataplatform.constant.UserConstant.ADMIN_ROLE;
 import static com.qqspeed.performancedataplatform.constant.UserConstant.USER_LOGIN_STATE;
@@ -55,12 +56,12 @@ public class UserController {
 
     /**
      * 通过id查询用户信息
-     * @param id
+     * @param userId
      * @return
      */
-    @GetMapping("/search/{id}")
-    public Result searchUserById(@PathVariable Integer id){
-        User user = userService.getById(id);
+    @GetMapping("/search/{userId}")
+    public Result searchUserById(@PathVariable Integer userId){
+        User user = userService.getById(userId);
         Integer code= user != null ? Code.SELECT_SUCCESS : Code.SELECT_FAILED;
         String msg = user != null ? "" : Message.SELECT_FAILED_MSG;
         return new Result(code,user,msg);
@@ -72,19 +73,20 @@ public class UserController {
      * @return
      */
     @GetMapping("/search")
-    public List<User> searchUser(String username, HttpServletRequest request){
+    public Result searchUser(String username, HttpServletRequest request){
         // 鉴权 仅管理员可查询
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User user =(User) userObj;
-        // 判断用户是否是普通用户
-        if (user == null || user.getPermission() != ADMIN_ROLE){
-            return new ArrayList<>();
+        if (!isAdmin(request)){
+            throw new BusinessException(Code.BUSINESS_ERR);
         }
         QueryWrapper<User> queryWrapper =new QueryWrapper<>();
+        // 通过用户名模糊查询
         if (StringUtils.isAnyBlank(username)){
             queryWrapper.like("user_name",username);
         }
-        return userService.list(queryWrapper);
+        List<User> userList = userService.list(queryWrapper);
+        // 信息脱敏
+        List<User> result = userList.stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
+        return new Result(Code.SELECT_SUCCESS,result,Message.SELECT_SUCCESS_MSG);
     }
 
 
@@ -95,31 +97,50 @@ public class UserController {
      */
     @PatchMapping
     public Result update(@RequestBody User user){
+        if (user == null){
+            throw new BusinessException(Code.BUSINESS_ERR);
+        }
         boolean flag = userService.updateById(user);
-        String msg = flag  ? "" : Message.UPDATE_SUCCESS_MSG;
-        return new Result(flag ? Code.UPDATE_SUCCESS : Code.UPDATE_FAILED,flag);
+        Integer code =flag ?Code.UPDATE_SUCCESS : Code.UPDATE_FAILED;
+        String msg = flag ? Message.UPDATE_SUCCESS_MSG : Message.UPDATE_FAILED_MSG;
+        return new Result(code,msg);
     }
 
     /**
      * 根据id删除用户
-     * @param id
+     * @param userId
      * @return
      */
-    @DeleteMapping("/{id}")
-    public Result deleteById(@PathVariable Long id,HttpServletRequest request){
-        if (id <= 0){
-            return new  Result(Code.DELETE_FAILED,null);
+    @DeleteMapping("/{userId}")
+    public Result deleteById(@PathVariable Long userId,HttpServletRequest request){
+        if (userId <= 0){
+            return new  Result(Code.DELETE_FAILED,Message.DELETE_FAILED_MSG);
         }
         // 鉴权 仅管理员可查询
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User user =(User) userObj;
-        // 判断用户是否是普通用户
-        if (user == null || user.getPermission() != ADMIN_ROLE){
-            return new Result();
+        if (!isAdmin(request)){
+            throw new BusinessException(Code.BUSINESS_ERR);
         }
-        boolean flag = userService.removeById(id);
-        String msg = flag  ? "" : Message.DELETE_SUCCESS_MSG;
-        return new Result(flag ? Code.DELETE_SUCCESS : Code.DELETE_FAILED,flag,msg);
+        if (userId <= 0) {
+            throw new BusinessException(Code.BUSINESS_ERR);
+        }
+        boolean b = userService.removeById(userId);
+        return new Result(Code.DELETE_SUCCESS,Message.DELETE_SUCCESS_MSG);
     }
 
+
+    /**
+     * 是否为管理员
+     *
+     * @param request
+     * @return
+     */
+    private boolean isAdmin(HttpServletRequest request) {
+        // 仅管理员可查询
+        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User user = (User) userObj;
+        return user != null && user.getPermission() == ADMIN_ROLE;
+    }
+
+
 }
+

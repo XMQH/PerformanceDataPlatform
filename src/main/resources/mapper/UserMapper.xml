@@ -5,7 +5,7 @@
 <mapper namespace="com.qqspeed.performancedataplatform.mapper.UserMapper">
 
     <resultMap id="BaseResultMap" type="com.qqspeed.performancedataplatform.model.domain.User">
-            <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
             <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
@@ -24,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_name,user_account,
+        user_id,user_name,user_account,
         user_password,avatar_url,gender,
         phone,email,nickname,
         permission,status,create_time,

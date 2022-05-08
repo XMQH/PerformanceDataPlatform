@@ -1,5 +1,9 @@
 package com.qqspeed.performancedataplatform.controller;
 
+import com.qqspeed.performancedataplatform.common.result.Code;
+import com.qqspeed.performancedataplatform.common.result.Message;
+import com.qqspeed.performancedataplatform.common.result.Result;
+import com.qqspeed.performancedataplatform.exception.BusinessException;
 import com.qqspeed.performancedataplatform.model.domain.User;
 import com.qqspeed.performancedataplatform.model.request.UserLoginRequest;
 import com.qqspeed.performancedataplatform.model.request.UserRegisterRequest;
@@ -20,46 +24,43 @@ public class LoginController {
     @Resource
     private UserService userService;
 
-//    @PostMapping("/login")
-//    public Result login(@RequestBody User user){
-//        //查询数据库中与前端输入 用户名和密码 相匹配的数据
-//        LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<User>();
-//        wrapper.eq(User::getUserName, user.getUserName())
-//                .eq(User::getUserPassword, user.getUserPassword());
-//        User result = userService.getOne(wrapper);
-//        Integer code= result != null
-//                && result.getUserName().equals(user.getUserName())
-//                && result.getUserPassword().equals(user.getUserPassword())
-//                ? Code.LOGIN_SUCCESS : Code.LOGIN_FAILED;
-//        String message = result != null ? Message.LOGIN_SUCCESS_MSG : Message.LOGIN_FAILED_MSG;
-//        return new Result(code,result,message);
-//    }
 
         @PostMapping("/register")
-        public Long userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
+        public Result userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
             if (userRegisterRequest == null){
-                return null;
+                throw new BusinessException(Code.BUSINESS_ERR);
             }
             String userAccount = userRegisterRequest.getUserAccount();
             String userPassword = userRegisterRequest.getUserPassword();
             String checkPassword = userRegisterRequest.getCheckPassword();
             if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
-                return null;
+                throw new BusinessException(Code.BUSINESS_ERR);
             }
-            return userService.userRegister(userAccount, userPassword, checkPassword);
+            long result = userService.userRegister(userAccount, userPassword, checkPassword);
+            return new Result(Code.REGISTER_SUCCESS,result, Message.REGISTER_SUCCESS_MSG);
         }
 
     @PostMapping("/login")
-    public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
+    public Result userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
         if (userLoginRequest == null){
-            return null;
+            throw new BusinessException(Code.BUSINESS_ERR);
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAnyBlank(userAccount,userPassword)){
-            return null;
+            throw new BusinessException(Code.BUSINESS_ERR);
         }
-        return userService.userLogin(userAccount, userPassword,request);
+        User result = userService.userLogin(userAccount, userPassword, request);
+        return new Result(Code.REGISTER_SUCCESS,result, Message.REGISTER_SUCCESS_MSG);
     }
 
+
+    @PostMapping("/logout")
+    public Result userLogout(HttpServletRequest request){
+        if (request == null){
+            throw new BusinessException(Code.BUSINESS_ERR);
+        }
+        int result = userService.userLogout(request);
+        return new Result(Code.LOGOUT_SUCCESS,result,Message.LOGOUT_SUCCESS_MSG);
+    }
 }

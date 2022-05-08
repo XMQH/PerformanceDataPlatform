@@ -1,9 +1,11 @@
-package com.qqspeed.performancedataplatform.constant.result;
+package com.qqspeed.performancedataplatform.common.result;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Result {
+public class Result implements Serializable {
     private Object data;
     private Integer code;
     private String msg;
@@ -18,6 +20,10 @@ public class Result {
     public Result( Integer code,Object data) {
         this.data = data;
         this.code = code;
+    }
+
+    public Result(Object data) {
+        this.data = data;
     }
 
     public Result() {
