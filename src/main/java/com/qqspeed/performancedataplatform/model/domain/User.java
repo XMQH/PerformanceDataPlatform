@@ -32,8 +32,8 @@ public class User implements Serializable {
     /**
      * 姓名
      */
-    @TableField("user_name")
-    private String userName;
+    @TableField("username")
+    private String username;
 
     /**
      * 账号
@@ -50,8 +50,8 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    @TableField("avatar_url")
-    private String avatarUrl;
+    @TableField("avatar")
+    private String avatar;
 
     /**
      * 性别

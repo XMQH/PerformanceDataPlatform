@@ -56,16 +56,21 @@ public class UserController {
 
     /**
      * 通过id查询用户信息
-     * @param userId
+     * @param user1
      * @return
      */
-    @GetMapping("/search/{userId}")
-    public Result searchUserById(@PathVariable Integer userId){
-        User user = userService.getById(userId);
+    @PostMapping("/info")
+    public Result searchUserInfo(@RequestBody User user1){
+        if (user1 == null){
+            return null;
+        }
+        Long userId = user1.getUserId();
+        User user = userService.getUserInfo(userId);
         Integer code= user != null ? Code.SELECT_SUCCESS : Code.SELECT_FAILED;
         String msg = user != null ? "" : Message.SELECT_FAILED_MSG;
         return new Result(code,user,msg);
     }
+
 
     /**
      * 通过用户名模糊查找用户
@@ -73,7 +78,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/search")
-    public Result searchUser(String username, HttpServletRequest request){
+    public Result searchUser(@RequestBody String username, HttpServletRequest request){
         // 鉴权 仅管理员可查询
         if (!isAdmin(request)){
             throw new BusinessException(Code.BUSINESS_ERR);
@@ -81,7 +86,7 @@ public class UserController {
         QueryWrapper<User> queryWrapper =new QueryWrapper<>();
         // 通过用户名模糊查询
         if (StringUtils.isAnyBlank(username)){
-            queryWrapper.like("user_name",username);
+            queryWrapper.like("username",username);
         }
         List<User> userList = userService.list(queryWrapper);
         // 信息脱敏

@@ -31,7 +31,7 @@ server:
     accesslog:
       enabled: false
   servlet:
-    context-path: /qqspeed
+    context-path: /api
 # MyBatis-Plus settings
 #控制台打印sql
 mybatis-plus:

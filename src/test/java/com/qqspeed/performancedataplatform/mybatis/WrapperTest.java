@@ -27,7 +27,7 @@ public class WrapperTest {
     @Test
     public void testSelectOne(){
         LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserName, "admin")
+        wrapper.eq(User::getUsername, "admin")
                .eq(User::getUserPassword, "123456");
         User userInfo = userMapper.selectOne(wrapper);
     }

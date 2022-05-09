@@ -49,4 +49,7 @@ public interface UserService extends IService<User> {
      * @return
      */
     int userLogout(HttpServletRequest request);
+
+    User getUserInfo(Long id);
+
 }

@@ -51,12 +51,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
             throw new BusinessException(Code.BUSINESS_ERR,"参数为空");
         }
-        //校验用户账号和密码长度是否小于6位
-        if (userAccount.length() < 6){
-            throw new BusinessException(Code.BUSINESS_ERR,"账户长度小于6位");
+        //校验用户账号和密码长度是否小于4位
+        if (userAccount.length() < 4){
+            throw new BusinessException(Code.BUSINESS_ERR,"账户长度小于4位");
         }
-        if (userPassword.length() < 6 || checkPassword.length() < 6){
-            throw new BusinessException(Code.BUSINESS_ERR,"密码长度小于6位");
+        if (userPassword.length() < 4 || checkPassword.length() < 4){
+            throw new BusinessException(Code.BUSINESS_ERR,"密码长度小于4位");
         }
         // 校验用户名不能包含特殊字符
         String validPattern= "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
@@ -97,12 +97,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isAnyBlank(userAccount,userPassword)){
             throw new BusinessException(Code.BUSINESS_ERR,"登录信息参数为空");
         }
-        //校验用户账号和密码长度是否小于6位
-        if (userAccount.length() < 6){
-            throw new BusinessException(Code.BUSINESS_ERR,"输入账号小于6位");
+        //校验用户账号和密码长度是否小于4位
+        if (userAccount.length() < 4){
+            throw new BusinessException(Code.BUSINESS_ERR,"输入账号小于4位");
         }
-        if (userPassword.length() < 6){
-            throw new BusinessException(Code.BUSINESS_ERR,"输入密码小于6位");
+        if (userPassword.length() < 4){
+            throw new BusinessException(Code.BUSINESS_ERR,"输入密码小于4位");
         }
         // 校验用户名不能包含特殊字符
         String validPattern= "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
@@ -132,16 +132,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 获取用户信息
+     * @param id
+     * @return
+     */
+    public User getUserInfo(Long id){
+        if (id <= 0){
+            return null;
+        }
+        User user = userMapper.selectById(id);
+        // 用户不存在
+        if (user == null){
+            log.info("User login failed, userAccount cannot match userPassword");
+            throw new BusinessException(Code.BUSINESS_ERR,"用户不存在");
+        }
+        // 用户脱敏
+        User safetyUser = new User();
+        safetyUser.setUsername(user.getUsername());
+        safetyUser.setUserAccount(user.getUserAccount());
+        safetyUser.setAvatar(user.getAvatar());
+        safetyUser.setGender(user.getGender());
+        safetyUser.setPhone(user.getPhone());
+        safetyUser.setEmail(user.getEmail());
+        safetyUser.setNickname(user.getNickname());
+        safetyUser.setPermission(user.getPermission());
+        safetyUser.setStatus(user.getStatus());
+        safetyUser.setDescription(user.getDescription());
+        return safetyUser;
+    }
+
+    /**
      * 用户脱敏 去除密码等重要信息
      * @param loginUser 返回脱敏后的信息
      * @return
      */
     public User getSafetyUser(User loginUser){
+        if (loginUser == null){
+            return null;
+        }
         User safetyUser = new User();
         safetyUser.setUserId(loginUser.getUserId());
-        safetyUser.setUserName(loginUser.getUserName());
+        safetyUser.setUsername(loginUser.getUsername());
         safetyUser.setUserAccount(loginUser.getUserAccount());
-        safetyUser.setAvatarUrl(loginUser.getAvatarUrl());
+        safetyUser.setAvatar(loginUser.getAvatar());
         safetyUser.setGender(loginUser.getGender());
         safetyUser.setPhone(loginUser.getPhone());
         safetyUser.setEmail(loginUser.getEmail());
@@ -152,6 +185,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safetyUser.setDescription(loginUser.getDescription());
         return safetyUser;
     }
+
 
     /**
      * 用户注销

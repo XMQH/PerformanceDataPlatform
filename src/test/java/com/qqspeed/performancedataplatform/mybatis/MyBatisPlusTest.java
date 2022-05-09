@@ -6,6 +6,7 @@ import com.qqspeed.performancedataplatform.model.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.DigestUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +19,11 @@ public class MyBatisPlusTest {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 盐值 混淆密码
+     */
+    private static final String SALT = "xmqh";
+
     @Test
     public void testSelectList() {
         //测试查询全部的用户
@@ -29,10 +35,12 @@ public class MyBatisPlusTest {
     @Test
     public void testInsert(){
         User user = new User();
-        user.setUserName("TestCc");
+        user.setUsername("TestCc");
         user.setUserAccount("243552");
-        user.setUserPassword("123456");
-        user.setAvatarUrl("https://weibo.com/u/6182024549");
+        // 密码加密
+        String encryptPassword= DigestUtils.md5DigestAsHex((SALT + "123456").getBytes());
+        user.setUserPassword(encryptPassword);
+        user.setAvatar("https://weibo.com/u/6182024549");
         user.setGender(0);
         user.setPhone("25665463432");
         user.setEmail("23878234@qq.com");
@@ -50,11 +58,10 @@ public class MyBatisPlusTest {
     @Test
     public void testUpdate(){
         User user = new User();
-        user.setUserName("TestCc");
-        user.setUserAccount("243552");
-        user.setUserPassword("123456");
-        user.setAvatarUrl("https://weibo.com/u/6182024549");
-        user.setGender(1);
+        user.setUserId(1L);
+        // 密码加密
+        String encryptPassword= DigestUtils.md5DigestAsHex((SALT + "123456").getBytes());
+        user.setUserPassword(encryptPassword);
         // 该方法会有更新字段验证策略，需配置：field-strategy字段更新插入策略属性
         userMapper.updateById(user);
     }
@@ -65,7 +72,7 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setUserName("王五");
+        user.setUsername("王五");
         // 执行更新的操作
         userMapper.updateById(user);
     }
@@ -75,11 +82,11 @@ public class MyBatisPlusTest {
         // 通过id查询用户信息
         User user = userMapper.selectById(6L);
         // 修改用户信息
-        user.setUserName("王五");
+        user.setUsername("王五");
 
         // 模拟抢先更新，没使用多线程 备注 后面试一下
         User user1 = userMapper.selectById(6L);
-        user1.setUserName("老六");
+        user1.setUsername("老六");
         userMapper.updateById(user1); //更新成功
         // 执行更新的操作
         userMapper.updateById(user); //更新失败 结果“老六” 此时版本号已被更新 版本不一致 不能修改
