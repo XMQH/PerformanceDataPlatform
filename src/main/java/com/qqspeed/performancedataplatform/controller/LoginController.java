@@ -51,7 +51,11 @@ public class LoginController {
             throw new BusinessException(Code.BUSINESS_ERR);
         }
         User result = userService.userLogin(userAccount, userPassword, request);
-        return new Result(Code.LOGIN_SUCCESS,result, Message.LOGIN_SUCCESS_MSG);
+        System.out.println(result);
+        if (result==null) {
+            return new Result(Code.LOGIN_FAILED, result,Message.LOGIN_FAILED_MSG);
+        }
+        return new Result(Code.LOGIN_SUCCESS, result, Message.LOGIN_SUCCESS_MSG);
     }
 
 

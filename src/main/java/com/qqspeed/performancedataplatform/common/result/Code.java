@@ -38,6 +38,7 @@ public class Code {
      * 业务异常状态码
      */
     public static final Integer BUSINESS_ERR = 50002; // 业务异常 暂时写一个
+    public static final Integer BUSINESS_LOGIN_ERR = 50003; // 业务异常 暂时写一个
 
 
 

@@ -119,10 +119,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
            .eq(User::getUserPassword,encryptPassword);
         User loginUser = userMapper.selectOne(lqw);
         // 用户不存在
-        if (loginUser == null){
-            log.info("User login failed, userAccount cannot match userPassword");
-            throw new BusinessException(Code.BUSINESS_ERR,"用户不存在");
-        }
+//        if (loginUser == null){
+//            log.info("User login failed, userAccount cannot match userPassword");
+//            throw new BusinessException(Code.BUSINESS_LOGIN_ERR,"用户不存在或者输入账号密码错误未找到该用户");
+//        }
         // 用户脱敏
         User safetyUser = getSafetyUser(loginUser);
         // 记录用户登录状态
