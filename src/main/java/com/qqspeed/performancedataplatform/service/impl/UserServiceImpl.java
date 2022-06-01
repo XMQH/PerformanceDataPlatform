@@ -2,7 +2,7 @@ package com.qqspeed.performancedataplatform.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qqspeed.performancedataplatform.common.result.Code;
+import com.qqspeed.performancedataplatform.common.result.ErrorCode;
 import com.qqspeed.performancedataplatform.exception.BusinessException;
 import com.qqspeed.performancedataplatform.mapper.UserMapper;
 import com.qqspeed.performancedataplatform.model.domain.User;
@@ -49,31 +49,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
         //校验 引入commons-lang3 同时校验userAccount,userPassword,checkPassword是否为空
         if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
-            throw new BusinessException(Code.BUSINESS_ERR,"参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"参数为空");
         }
         //校验用户账号和密码长度是否小于4位
         if (userAccount.length() < 4){
-            throw new BusinessException(Code.BUSINESS_ERR,"账户长度小于4位");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账户长度小于4位");
         }
         if (userPassword.length() < 4 || checkPassword.length() < 4){
-            throw new BusinessException(Code.BUSINESS_ERR,"密码长度小于4位");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"密码长度小于4位");
         }
         // 校验用户名不能包含特殊字符
         String validPattern= "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()){
-            throw new BusinessException(Code.BUSINESS_ERR,"用户账户包含特殊字符");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户账户包含特殊字符");
         }
         // 密码和校验密码要相同
         if (!userPassword.equals(checkPassword)){
-            throw new BusinessException(Code.BUSINESS_ERR,"两次输入密码不一致");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"两次输入密码不一致");
         }
         // 账号不能重复 查询数据库放到最后
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount,userAccount);
         long count = userMapper.selectCount(lqw);
         if (count > 0){
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
         }
         // 密码加密
         String encryptPassword= DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
@@ -95,20 +95,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         //校验 引入commons-lang3 同时校验userAccount,userPassword,checkPassword是否为空
         if (StringUtils.isAnyBlank(userAccount,userPassword)){
-            throw new BusinessException(Code.BUSINESS_ERR,"登录信息参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"登录信息参数为空");
         }
         //校验用户账号和密码长度是否小于4位
         if (userAccount.length() < 4){
-            throw new BusinessException(Code.BUSINESS_ERR,"输入账号小于4位");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入账号小于4位");
         }
         if (userPassword.length() < 4){
-            throw new BusinessException(Code.BUSINESS_ERR,"输入密码小于4位");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入密码小于4位");
         }
         // 校验用户名不能包含特殊字符
         String validPattern= "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()){
-            throw new BusinessException(Code.BUSINESS_ERR,"账户包含特殊字符");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账户包含特殊字符");
         }
         // 密码加密
         String encryptPassword= DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
@@ -144,20 +144,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 用户不存在
         if (user == null){
             log.info("User login failed, userAccount cannot match userPassword");
-            throw new BusinessException(Code.BUSINESS_ERR,"用户不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户不存在");
         }
         // 用户脱敏
-        User safetyUser = new User();
-        safetyUser.setUsername(user.getUsername());
-        safetyUser.setUserAccount(user.getUserAccount());
-        safetyUser.setAvatar(user.getAvatar());
-        safetyUser.setGender(user.getGender());
-        safetyUser.setPhone(user.getPhone());
-        safetyUser.setEmail(user.getEmail());
-        safetyUser.setNickname(user.getNickname());
-        safetyUser.setPermission(user.getPermission());
-        safetyUser.setStatus(user.getStatus());
-        safetyUser.setDescription(user.getDescription());
+        User safetyUser = getSafetyUser(user);
+
         return safetyUser;
     }
 

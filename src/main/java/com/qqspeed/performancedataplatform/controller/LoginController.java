@@ -1,8 +1,6 @@
 package com.qqspeed.performancedataplatform.controller;
 
-import com.qqspeed.performancedataplatform.common.result.Code;
-import com.qqspeed.performancedataplatform.common.result.Message;
-import com.qqspeed.performancedataplatform.common.result.Result;
+import com.qqspeed.performancedataplatform.common.result.*;
 import com.qqspeed.performancedataplatform.exception.BusinessException;
 import com.qqspeed.performancedataplatform.model.domain.User;
 import com.qqspeed.performancedataplatform.model.request.UserLoginRequest;
@@ -26,45 +24,45 @@ public class LoginController {
 
 
         @PostMapping("/register")
-        public Result userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
+        public BaseResponse userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
             if (userRegisterRequest == null){
-                throw new BusinessException(Code.BUSINESS_ERR);
+                throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
             String userAccount = userRegisterRequest.getUserAccount();
             String userPassword = userRegisterRequest.getUserPassword();
             String checkPassword = userRegisterRequest.getCheckPassword();
             if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
-                throw new BusinessException(Code.BUSINESS_ERR);
+                return ResultUtils.error(ErrorCode.NULL_ERROR);
             }
             long result = userService.userRegister(userAccount, userPassword, checkPassword);
-            return new Result(Code.REGISTER_SUCCESS,result, Message.REGISTER_SUCCESS_MSG);
+            return ResultUtils.success(Code.LOGIN_SUCCESS,result,Message.LOGIN_SUCCESS_MSG);
         }
 
     @PostMapping("/login")
-    public Result userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
+    public BaseResponse userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
         if (userLoginRequest == null){
-            throw new BusinessException(Code.BUSINESS_ERR);
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAnyBlank(userAccount,userPassword)){
-            throw new BusinessException(Code.BUSINESS_ERR);
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
         }
         User result = userService.userLogin(userAccount, userPassword, request);
         System.out.println(result);
         if (result==null) {
-            return new Result(Code.LOGIN_FAILED, result,Message.LOGIN_FAILED_MSG);
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
         }
-        return new Result(Code.LOGIN_SUCCESS, result, Message.LOGIN_SUCCESS_MSG);
+        return ResultUtils.success(result);
     }
 
 
     @PostMapping("/logout")
-    public Result userLogout(HttpServletRequest request){
+    public BaseResponse<Integer> userLogout(HttpServletRequest request){
         if (request == null){
-            throw new BusinessException(Code.BUSINESS_ERR);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         int result = userService.userLogout(request);
-        return new Result(Code.LOGOUT_SUCCESS,result,Message.LOGOUT_SUCCESS_MSG);
+        return ResultUtils.success(result);
     }
 }
