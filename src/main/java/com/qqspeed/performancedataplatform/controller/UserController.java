@@ -47,9 +47,9 @@ public class UserController {
      * @return
      */
     @PostMapping //POST请求
-    public Result save(@RequestBody User user){
+    public BaseResponse<Boolean> save(@RequestBody User user){
         boolean flag = userService.save(user);
-        return new Result(flag ? Code.SAVE_SUCCESS : Code.SAVE_FAILED,flag, Message.SAVE_SUCCESS_MSG) ;// 传递给前端状态码
+        return ResultUtils.success(flag ? Code.SAVE_SUCCESS : Code.SAVE_FAILED,flag, Message.SAVE_SUCCESS_MSG);// 传递给前端状态码
     }
 
     /**
@@ -58,7 +58,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/info")
-    public Result searchUserInfo(@RequestBody User user1){
+    public BaseResponse<User> searchUserInfo(@RequestBody User user1){
         if (user1 == null){
             return null;
         }
@@ -66,7 +66,7 @@ public class UserController {
         User user = userService.getUserInfo(userId);
         Integer code= user != null ? Code.SELECT_SUCCESS : Code.SELECT_FAILED;
         String msg = user != null ? "" : Message.SELECT_FAILED_MSG;
-        return new Result(code,user,msg);
+        return ResultUtils.success(code,user,msg);
     }
 
 
@@ -76,7 +76,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/search")
-    public Result searchUser(@RequestBody String username, HttpServletRequest request){
+    public BaseResponse<List<User>> searchUser(@RequestBody String username, HttpServletRequest request){
         // 鉴权 仅管理员可查询
         if (!isAdmin(request)){
             throw new BusinessException(ErrorCode.NO_AUTH);
@@ -89,7 +89,7 @@ public class UserController {
         List<User> userList = userService.list(queryWrapper);
         // 信息脱敏
         List<User> result = userList.stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
-        return new Result(Code.SELECT_SUCCESS,result,Message.SELECT_SUCCESS_MSG);
+        return ResultUtils.success(Code.SELECT_SUCCESS,result,Message.SELECT_SUCCESS_MSG);
     }
 
 
@@ -99,14 +99,14 @@ public class UserController {
      * @return
      */
     @PatchMapping
-    public Result update(@RequestBody User user){
+    public BaseResponse<String> update(@RequestBody User user){
         if (user == null){
             throw new BusinessException(ErrorCode.NULL_ERROR);
         }
         boolean flag = userService.updateById(user);
         Integer code =flag ?Code.UPDATE_SUCCESS : Code.UPDATE_FAILED;
         String msg = flag ? Message.UPDATE_SUCCESS_MSG : Message.UPDATE_FAILED_MSG;
-        return new Result(code,msg);
+        return ResultUtils.success(code,msg);
     }
 
     /**
@@ -115,9 +115,9 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/{userId}")
-    public Result deleteById(@PathVariable Long userId,HttpServletRequest request){
+    public BaseResponse<String> deleteById(@PathVariable Long userId, HttpServletRequest request){
         if (userId <= 0){
-            return new  Result(Code.DELETE_FAILED,Message.DELETE_FAILED_MSG);
+            return ResultUtils.success(Code.DELETE_FAILED,Message.DELETE_FAILED_MSG);
         }
         // 鉴权 仅管理员可查询
         if (!isAdmin(request)){
@@ -127,7 +127,7 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         boolean b = userService.removeById(userId);
-        return new Result(Code.DELETE_SUCCESS,Message.DELETE_SUCCESS_MSG);
+        return ResultUtils.success(Code.DELETE_SUCCESS,Message.DELETE_SUCCESS_MSG);
     }
 
 //    @GetMapping("/current")
