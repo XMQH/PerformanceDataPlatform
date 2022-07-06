@@ -35,7 +35,8 @@ public class LoginController {
                 return ResultUtils.error(ErrorCode.NULL_ERROR);
             }
             long result = userService.userRegister(userAccount, userPassword, checkPassword);
-            return ResultUtils.success(Code.REGISTER_SUCCESS,result,Message.REGISTER_SUCCESS_MSG);
+
+            return ResultUtils.success(ErrorCode.REGISTER_SUCCESS,result);
         }
 
     @PostMapping("/login")
@@ -53,7 +54,7 @@ public class LoginController {
         if (result==null) {
             return ResultUtils.error(ErrorCode.PARAMS_ERROR);
         }
-        return ResultUtils.success(Code.LOGIN_SUCCESS,result,Message.LOGIN_SUCCESS_MSG);
+        return ResultUtils.success(ErrorCode.LOGIN_SUCCESS,result);
     }
 
 
@@ -63,6 +64,6 @@ public class LoginController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         int result = userService.userLogout(request);
-        return ResultUtils.success(Code.LOGOUT_SUCCESS,result,Message.LOGOUT_SUCCESS_MSG);
+        return ResultUtils.success(ErrorCode.LOGOUT_SUCCESS,result);
     }
 }

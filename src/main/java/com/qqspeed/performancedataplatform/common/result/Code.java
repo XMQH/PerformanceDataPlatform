@@ -15,7 +15,7 @@ public class Code {
     public static final Integer SELECT_SUCCESS = 10041; // 查询、搜索成功
     public static final Integer DELETE_SUCCESS = 10051; // 删除成功
 
-    public static final Integer LOGOUT_SUCCESS = 10051; // 注销成功
+    public static final Integer LOGOUT_SUCCESS = 10061; // 注销成功
 
     /**
      * 失败状态码
@@ -27,7 +27,7 @@ public class Code {
     public static final Integer UPDATE_FAILED = 10030; // 更新失败
     public static final Integer SELECT_FAILED = 10040; // 查询、搜索失败
     public static final Integer DELETE_FAILED = 10050; // 删除失败
-    public static final Integer LOGOUT_FAILED = 10050; // 注销失败
+    public static final Integer LOGOUT_FAILED = 10060; // 注销失败
 
     /**
      * 系统异常状态码

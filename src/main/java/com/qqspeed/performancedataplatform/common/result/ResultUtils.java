@@ -38,6 +38,18 @@ public class ResultUtils {
     public static <T> BaseResponse<T> success(Integer code,T data) {
         return new BaseResponse<>(code, data);
     }
+
+    /**
+     * 成功
+     * @param code
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public static <T> BaseResponse<T> success(ErrorCode code,T data) {
+        return new BaseResponse(code.getCode(), data, code.getMessage(), code.getDescription());
+    }
+
     /**
      * 失败
      *
